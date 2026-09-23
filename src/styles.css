@@ -1,0 +1,1444 @@
+/*
+ * The board sits in the sea; everything around it is the table it sits on —
+ * dark walnut rails with a brass inlay, and parchment for anything you read
+ * closely (modals). The island stays the brightest thing in the room.
+ */
+
+:root {
+  --sea-abyss: #08161f;
+  --sea-deep: #0d222f;
+  --sea: #123a52;
+  --sea-lit: #1a5674;
+
+  --panel: #2a1c13;
+  --panel-raised: #3a2819;
+  --panel-hover: #46311f;
+  --panel-line: #5a4128;
+  --panel-well: #1f150e;
+
+  --brass: #c8a04b;
+  --brass-lit: #e3c27a;
+  --brass-dark: #8a6a2c;
+
+  --ink: #2b2118;
+  --paper: #efe3c6;
+  --text: #f1e6cc;
+  --text-dim: #c2ad8a;
+  --text-faint: #9c8664;
+
+  /* Walnut: a faint long grain over the base colour. */
+  --wood:
+    repeating-linear-gradient(91deg, rgba(0, 0, 0, 0.07) 0 2px, transparent 2px 11px),
+    repeating-linear-gradient(89deg, rgba(255, 214, 160, 0.035) 0 1px, transparent 1px 17px),
+    var(--panel);
+
+  --frame: #8a5a33;
+  --frame-dark: #603a1f;
+
+  --brick: #b1502e;
+  --lumber: #1f6b3f;
+  --wool: #8fbb4a;
+  --grain: #e0a92b;
+  --ore: #6b7a89;
+  --desert: #d9c398;
+
+  --danger: #c0392b;
+  --good: #46a06b;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  --font-ui: 'Archivo', system-ui, -apple-system, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+
+  --rail: 288px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  color: var(--text);
+  background: var(--sea-abyss);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass-lit);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* ---------------------------------------------------------------- entrance */
+
+.entrance {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 32px 16px;
+  background:
+    radial-gradient(1200px 700px at 50% -10%, #1a4a66 0%, transparent 60%),
+    linear-gradient(180deg, var(--sea-deep), var(--sea-abyss));
+}
+
+.entrance-card {
+  width: min(430px, 100%);
+  background: var(--wood);
+  border: 1px solid var(--panel-line);
+  border-radius: 14px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 30px 70px -30px #000;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 46px;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--paper);
+  margin-bottom: 6px;
+}
+
+.wordmark span {
+  color: var(--grain);
+}
+
+.entrance-lede {
+  color: var(--text-dim);
+  margin: 0 0 28px;
+  font-size: 15px;
+  max-width: 34ch;
+  line-height: 1.5;
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  font: inherit;
+  padding: 11px 13px;
+  color: var(--text);
+  background: var(--panel-well);
+  border: 1px solid var(--panel-line);
+  border-radius: var(--radius-sm);
+}
+
+.field input::placeholder {
+  color: var(--text-faint);
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--brass);
+  outline: none;
+}
+
+.code-input {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  font-family: var(--font-display);
+  font-size: 20px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.row > * {
+  flex: 1;
+}
+
+.btn {
+  padding: 11px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--panel-raised);
+  border: 1px solid var(--panel-line);
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--panel-hover);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+}
+
+/* Brass: a lit top edge and a darker lip, like a fitting on the box. */
+.btn-primary {
+  background: var(--brass);
+  border-color: var(--brass-dark);
+  color: #231a10;
+  box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.55), 0 2px 0 var(--brass-dark);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--brass-lit);
+}
+
+.btn-danger {
+  background: var(--danger);
+  border-color: #98291d;
+  color: #fff;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--panel-line);
+}
+
+.notice {
+  margin-top: 16px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: #3a1d19;
+  border: 1px solid #6d3227;
+  color: #f3c3bb;
+  font-size: 13px;
+}
+
+/* ------------------------------------------------------------------- lobby */
+
+.lobby-code {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--brass-lit);
+  text-align: center;
+  padding: 14px 0 6px;
+}
+
+.lobby-hint {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 13px;
+  margin: 0 0 22px;
+}
+
+.field .lobby-hint {
+  display: block;
+  text-align: left;
+  margin: 6px 0 0;
+}
+
+.seat-list {
+  list-style: none;
+  margin: 0 0 22px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.seat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--panel-well);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--seat-color, var(--panel-line));
+}
+
+.seat-name {
+  flex: 1;
+  font-weight: 500;
+}
+
+.seat-tag {
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+/* -------------------------------------------------------------------- game */
+
+.game {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr var(--rail);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    'top   top'
+    'board rail'
+    'hand  rail';
+  background: linear-gradient(180deg, var(--sea-deep), var(--sea-abyss));
+}
+
+.topbar {
+  grid-area: top;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 18px;
+  background: var(--wood);
+  /* Brass inlay where the table meets the sea. */
+  border-bottom: 2px solid var(--brass-dark);
+}
+
+.topbar .wordmark {
+  font-size: 22px;
+  margin: 0;
+}
+
+.room-code {
+  font-family: var(--font-display);
+  letter-spacing: 0.18em;
+  color: var(--text-dim);
+  font-size: 14px;
+}
+
+.turn-banner {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: var(--panel-well);
+  border: 1px solid var(--panel-line);
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.turn-banner[data-mine='true'] {
+  border-color: var(--brass);
+  box-shadow: 0 0 0 1px var(--brass), 0 0 18px -2px rgba(227, 194, 122, 0.55);
+}
+
+.turn-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--turn-color, var(--text-dim));
+}
+
+.board-stage {
+  grid-area: board;
+  position: relative;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  /* The sea lives here rather than inside the SVG, so it reaches the edges of
+     the stage instead of ending in a visible square. */
+  background: radial-gradient(75% 75% at 50% 44%, #1d5f80 0%, #123a52 58%, #08202e 100%);
+}
+
+.board-stage svg {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+/* The 2D board's stacked layers. will-change gives each its own compositor
+   layer, so the ever-moving sea and spot markers never repaint the board. */
+.board2d {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.board2d > svg {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.board2d > svg:not([role='img']) {
+  pointer-events: none;
+}
+
+.board2d-spots .spot {
+  pointer-events: auto;
+}
+
+.board3d {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+/* Soft vignette over the canvas: pulls the eye to the island without a post pass. */
+.board3d::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(80% 80% at 50% 48%, transparent 55%, rgba(3, 12, 18, 0.55) 100%);
+}
+
+.board3d-reset,
+.mode-toggle {
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--panel-raised);
+  border: 1px solid var(--panel-line);
+  color: var(--text-dim);
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.board3d-reset:hover,
+.mode-toggle:hover {
+  background: var(--panel-hover);
+  color: var(--text);
+}
+
+.board3d-reset {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 1;
+}
+
+.rail {
+  grid-area: rail;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  background: var(--wood);
+  border-left: 2px solid var(--brass-dark);
+}
+
+.bank {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 7px;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.bank-label {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-right: auto;
+}
+
+.bank-cell {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.bank-cell[data-empty='true'] {
+  opacity: 0.4;
+}
+
+.bank-glyph {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.bank-dev {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-align: center;
+  line-height: 16px;
+  border-radius: 3px;
+  background: var(--panel-line);
+  color: var(--text);
+}
+
+.players {
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+  border-bottom: 1px solid var(--panel-line);
+}
+
+.player-card {
+  padding: 9px 11px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-well);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 2px 10px;
+  align-items: center;
+  transition: background 0.3s ease;
+}
+
+.player-card[data-active='true'] {
+  background: var(--panel-raised);
+  box-shadow: inset 0 0 0 1px var(--panel-line);
+}
+
+/* A painted wooden token in the player's colour; the active player's glows. */
+.avatar {
+  grid-row: span 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  background: var(--player-color);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+    0 0 0 2px var(--panel-line);
+}
+
+.player-card[data-active='true'] .avatar {
+  animation: turn-glow 1.8s ease-in-out infinite;
+}
+
+@keyframes turn-glow {
+  0%,
+  100% {
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+      0 0 0 2px var(--brass-lit),
+      0 0 6px 1px var(--player-color);
+  }
+  50% {
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.3),
+      inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+      0 0 0 2px var(--brass-lit),
+      0 0 16px 5px var(--player-color);
+  }
+}
+
+.player-card[data-offline='true'] {
+  opacity: 0.5;
+}
+
+.player-name {
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.player-vp {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--paper);
+}
+
+.player-meta {
+  grid-column: 2 / -1;
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.player-meta b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.award {
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 100px;
+  background: var(--panel-line);
+  color: var(--text);
+  /* Awards change hands: a badge arriving on a new player announces it. */
+  animation: award-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes award-in {
+  from {
+    transform: scale(0.2) rotate(-20deg);
+    opacity: 0;
+  }
+}
+
+.log {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.log-entry {
+  color: var(--text-dim);
+  border-radius: 4px;
+  animation: log-in 1.6s ease-out;
+}
+
+/* The newest line flashes brass once, so you can see what just happened. */
+@keyframes log-in {
+  from {
+    background: rgba(200, 160, 75, 0.28);
+  }
+}
+
+.log-entry b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.log-empty {
+  color: var(--text-faint);
+  font-size: 13px;
+}
+
+/* -------------------------------------------------------------------- hand */
+
+.handbar {
+  grid-area: hand;
+  background: var(--wood);
+  border-top: 2px solid var(--brass-dark);
+  /* The tray's lip: shadow falling into the tray from the rim above. */
+  box-shadow: inset 0 10px 14px -12px rgba(0, 0, 0, 0.8);
+  padding: 10px 18px 12px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* Held cards, fanned: each tilts a little further out and dips along the arc. */
+.cards {
+  display: flex;
+  padding: 4px 6px 0;
+}
+
+.cards .card + .card {
+  margin-left: -8px;
+}
+
+.cards .card:nth-child(1) {
+  --fan: -8deg;
+  --dip: 5px;
+}
+.cards .card:nth-child(2) {
+  --fan: -4deg;
+  --dip: 1px;
+}
+.cards .card:nth-child(4) {
+  --fan: 4deg;
+  --dip: 1px;
+}
+.cards .card:nth-child(5) {
+  --fan: 8deg;
+  --dip: 5px;
+}
+
+.card {
+  position: relative;
+  width: 60px;
+  height: 84px;
+  border-radius: 8px;
+  /* A printed card: lit from the upper left like the board, with a paper edge. */
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0) 45%),
+    linear-gradient(200deg, rgba(0, 0, 0, 0) 55%, rgba(18, 10, 2, 0.45)),
+    var(--card-color);
+  color: #17120a;
+  display: grid;
+  place-items: center;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 252, 240, 0.5),
+    inset 0 0 0 3.5px rgba(30, 18, 6, 0.35),
+    0 3px 0 rgba(16, 9, 2, 0.45),
+    0 7px 12px -5px rgba(0, 0, 0, 0.6);
+  transform: translateY(var(--dip, 0)) rotate(var(--fan, 0));
+  transform-origin: 50% 120%;
+  transition: transform 0.18s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.card:not([data-empty='true']):hover {
+  transform: translateY(-10px) rotate(0);
+  z-index: 1;
+}
+
+.card[data-empty='true'] {
+  filter: grayscale(0.55) brightness(0.72);
+  opacity: 0.45;
+}
+
+.card svg {
+  width: 40px;
+  height: 40px;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.4));
+}
+
+/* The count sits in the top-left corner, the way a card's value does: the one
+   corner a fanned hand never covers. */
+.card-count {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 5px;
+  border-radius: 11px;
+  background: var(--panel-well);
+  color: var(--paper);
+  border: 1.5px solid var(--brass);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 19px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  animation: count-pop 0.35s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+
+@keyframes count-pop {
+  from {
+    transform: scale(1.7);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.build-costs {
+  display: flex;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.prompt {
+  font-size: 14px;
+  color: var(--brass-lit);
+  font-weight: 600;
+  max-width: 30ch;
+  line-height: 1.35;
+}
+
+/* ------------------------------------------------------------------- dice */
+
+.dice {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+
+.die {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: var(--paper);
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  padding: 5px;
+  box-shadow: 0 2px 0 #b5a487;
+}
+
+.pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ink);
+  align-self: center;
+  justify-self: center;
+}
+
+.die[data-rolling='true'] {
+  animation: tumble 0.5s ease;
+}
+
+@keyframes tumble {
+  0% {
+    transform: rotate(0) scale(1);
+  }
+  40% {
+    transform: rotate(-18deg) scale(1.16);
+  }
+  70% {
+    transform: rotate(12deg) scale(0.96);
+  }
+  100% {
+    transform: rotate(0) scale(1);
+  }
+}
+
+.dice-total {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--paper);
+  min-width: 2ch;
+}
+
+/* ------------------------------------------------------------------ modals */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 9, 5, 0.62);
+  animation: scrim-in 0.2s ease-out;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  z-index: 40;
+  backdrop-filter: blur(3px);
+}
+
+@keyframes scrim-in {
+  from {
+    background: rgba(14, 9, 5, 0);
+    backdrop-filter: blur(0);
+  }
+}
+
+/*
+ * Anything you read closely is a parchment sheet. Scoping the tokens here
+ * re-inks every control inside a modal without restyling each one.
+ */
+.modal {
+  --text: var(--ink);
+  --text-dim: #6b5840;
+  --text-faint: #75624a;
+  --panel-raised: #dcc9a0;
+  --panel-hover: #d2bd90;
+  --panel-line: #b9a077;
+  --panel-well: #e6d6b2;
+  --sea-abyss: #e6d6b2;
+  color: var(--text);
+  width: min(560px, 100%);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 250, 235, 0.6), transparent 70%),
+    var(--paper);
+  border: 1px solid #b9a077;
+  border-radius: 6px;
+  padding: 24px;
+  box-shadow:
+    0 0 0 6px rgba(42, 28, 19, 0.9),
+    0 0 0 7px var(--brass-dark),
+    0 30px 80px -20px #000;
+  animation: sheet-in 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.15);
+  max-height: 88vh;
+  overflow-y: auto;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(18px) scale(0.96) rotate(-0.6deg);
+    opacity: 0;
+  }
+}
+
+.modal h2 {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.modal .wordmark {
+  color: var(--ink);
+}
+
+.modal-lede {
+  color: var(--text-dim);
+  font-size: 14px;
+  margin: 0 0 20px;
+}
+
+.picker {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.picker-cell {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border-radius: var(--radius-sm);
+  background: var(--sea-abyss);
+  border: 1px solid transparent;
+}
+
+.picker-cell[data-selected='true'] {
+  border-color: var(--brass-dark);
+  box-shadow: inset 0 0 0 1px var(--brass-dark);
+}
+
+.picker-cell svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Resource colours are tuned for dark wood; on parchment the pale ones need ink. */
+.modal .picker-cell svg {
+  filter: brightness(0.62) saturate(1.3);
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stepper button {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  background: var(--panel-raised);
+  border: 1px solid var(--panel-line);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stepper span {
+  min-width: 2ch;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.dev-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.dev-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--sea-abyss);
+  border-left: 3px solid var(--brass);
+  /* Cards are dealt face-down and turn over as the list opens. */
+  animation: card-flip 0.45s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
+}
+
+.dev-card:nth-child(2) {
+  animation-delay: 60ms;
+}
+.dev-card:nth-child(3) {
+  animation-delay: 120ms;
+}
+.dev-card:nth-child(n + 4) {
+  animation-delay: 180ms;
+}
+
+@keyframes card-flip {
+  from {
+    transform: perspective(600px) rotateX(-80deg) translateY(-8px);
+    opacity: 0;
+  }
+}
+
+.dev-card[data-playable='false'] {
+  border-left-color: var(--panel-line);
+  opacity: 0.55;
+}
+
+.dev-card h3 {
+  font-size: 15px;
+}
+
+.dev-card p {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+/* Two five-resource pickers never fit side by side at modal width, so the
+   give and want sides stack. */
+.trade-sides {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.trade-side .picker {
+  margin-bottom: 0;
+}
+
+.trade-side h3 {
+  font-size: 13px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.trade-swap {
+  color: var(--text-faint);
+  font-size: 18px;
+  text-align: center;
+  line-height: 1;
+}
+
+.responses {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.response {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--sea-abyss);
+  font-size: 14px;
+}
+
+.response-state {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.response-state[data-state='accept'] {
+  color: var(--good);
+}
+
+.response-state[data-state='reject'] {
+  color: var(--text-faint);
+}
+
+.winner {
+  text-align: center;
+}
+
+.winner .wordmark {
+  font-size: 34px;
+}
+
+.scoreboard {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0;
+  display: grid;
+  gap: 6px;
+}
+
+.scoreboard li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--sea-abyss);
+  border-left: 3px solid var(--player-color);
+}
+
+.scoreboard b {
+  margin-left: auto;
+  font-family: var(--font-display);
+  font-size: 18px;
+}
+
+/* --------------------------------------------------------------- board bits */
+
+/*
+ * The 2D board's motion mirrors the 3D one: tiles fall in ring by ring, chits
+ * pop, pieces drop with a dust ring, the robber hops, producing hexes pulse.
+ * SVG groups animate about their own box, hence transform-box everywhere.
+ */
+.hex-tile {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: tile-drop 0.55s cubic-bezier(0.3, 1.35, 0.5, 1) backwards;
+}
+
+@keyframes tile-drop {
+  from {
+    transform: translateY(-70px) scale(1.12);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+.token-pop {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: token-pop 0.35s cubic-bezier(0.34, 1.7, 0.64, 1) backwards;
+}
+
+@keyframes token-pop {
+  from {
+    transform: scale(0);
+  }
+}
+
+.robbed-shade {
+  fill: #1a1420;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  animation: shade-in 0.6s ease-out 0.4s backwards;
+}
+
+@keyframes shade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.hex-glow {
+  fill: #ffc24a;
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: hex-glow 1.8s ease-in-out 0.35s;
+}
+
+@keyframes hex-glow {
+  17%,
+  50%,
+  83% {
+    opacity: 0.55;
+  }
+  0%,
+  33%,
+  67%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.chit-ring {
+  fill: none;
+  stroke: #ffd66e;
+  stroke-width: 3;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: chit-ring 1.8s ease-out 0.35s;
+}
+
+@keyframes chit-ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+.swell {
+  animation: swell 9s linear infinite;
+}
+
+@keyframes swell {
+  to {
+    stroke-dashoffset: var(--loop);
+  }
+}
+
+.foam {
+  opacity: 0.14;
+  animation: foam 4.5s ease-in-out infinite;
+}
+
+@keyframes foam {
+  50% {
+    opacity: 0.26;
+  }
+}
+
+.boat {
+  transform-box: fill-box;
+  transform-origin: 50% 90%;
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-3deg);
+  }
+  50% {
+    transform: translateY(2.5px) rotate(3deg);
+  }
+}
+
+.spot {
+  cursor: pointer;
+}
+
+.spot-marker {
+  animation: breathe 2.1s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.15s cubic-bezier(0.34, 1.6, 0.64, 1);
+}
+
+/* Hovering a legal spot lifts its marker, as in 3D. */
+.spot:hover .spot-marker {
+  transform: translateY(-3px) scale(1.35);
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.piece-drop {
+  animation: piece-drop 0.7s linear backwards;
+}
+
+/* A fall and two shrinking bounces, hand-keyed so it reads as weight. */
+@keyframes piece-drop {
+  0% {
+    transform: translateY(-60px);
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  10% {
+    opacity: 1;
+  }
+  45% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+  }
+  65% {
+    transform: translateY(-10px);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  82% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0.55, 0.45, 1);
+  }
+  91% {
+    transform: translateY(-3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.dust-ring {
+  fill: none;
+  stroke: #e5d6b6;
+  stroke-width: 3;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: dust 0.6s ease-out 0.3s;
+}
+
+@keyframes dust {
+  from {
+    opacity: 0.8;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 118px;
+  transform: translateX(-50%);
+  animation: toast-in 0.25s ease-out;
+  background: var(--danger);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 60;
+  box-shadow: 0 10px 30px -10px #000;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translate(-50%, 12px);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .game {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto auto;
+    grid-template-areas:
+      'top'
+      'board'
+      'rail'
+      'hand';
+  }
+
+  .rail {
+    border-left: none;
+    border-top: 2px solid var(--brass-dark);
+    grid-template-rows: auto;
+    max-height: 190px;
+    overflow-y: auto;
+  }
+
+  .log {
+    display: none;
+  }
+
+  .handbar {
+    gap: 12px;
+  }
+
+  .card {
+    width: 46px;
+    height: 64px;
+  }
+
+  .card svg {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ----------------------------------------------------------- card flights */
+
+.flights {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.flying-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 56px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  color: #17120a;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 45%),
+    var(--card-color);
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 252, 240, 0.55),
+    0 10px 18px -6px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.flying-card svg {
+  width: 24px;
+  height: 24px;
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 80;
+}
